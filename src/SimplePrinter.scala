@@ -10,7 +10,7 @@ import Equation._
 import Node._
 import Parser._
 
-object Printer {
+object SimplePrinter {
 
   def newline: String = {
     "\n"

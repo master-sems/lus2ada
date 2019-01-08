@@ -352,11 +352,11 @@ object Parser {
     def content: List[Char] = {
       read_all(new FileReader(filename))
     }
-    val a = print("file loaded\n")
+    val a = println("FILE " + filename + " IS LOADED.")
     def tokens: List[(Token, Int)] = {
       Lexer.lexer(content)
     }
-    val b = print("lexing done\n")
+    val b = println("FILE " + filename +"IS LEXED.\n")
     parseProg(tokens)
   }
   

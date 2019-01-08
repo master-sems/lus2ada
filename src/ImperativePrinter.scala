@@ -10,7 +10,7 @@ import Equation._
 import Node._
 import Parser._
 
-object PrinterDois {
+object ImperativePrinter {
 
   def newline: String = {
     "\n"
@@ -19,9 +19,9 @@ object PrinterDois {
   def string_of_typ(ty: Typ) : String  = {
     ty match {
       case TypInt() =>
-        "int"
+        "integer"
       case TypBool() =>
-        "bool"
+        "boolean"
       }
   }
 
@@ -33,9 +33,9 @@ object PrinterDois {
         val (v, ty) = z
         t match {
           case Nil =>
-            (v + (": " + string_of_typ(ty)))
+            ("  " + v + (": " + string_of_typ(ty) + ";\n"))
           case (_ :: _) =>
-            (v + (": " + (string_of_typ(ty) + ("; " + string_of_env(t)))))
+            ("  " + v + (": " + (string_of_typ(ty) + (";\n" + string_of_env(t)))))
         }
     }
   }
@@ -81,7 +81,7 @@ object PrinterDois {
       case IfThenElse(e1, e2, e3) =>
         ("(if " + (string_of_exp(e1) + (" then " + (string_of_exp(e2) + (" else " + (string_of_exp(e3) + ")"))))))
       case Pre(s) =>
-        ("(" + ("pre " + (s + ")")))
+        ("(" + ("pre_" + (s + ")")))
       case Arrow(e1, e2) =>
         ("(" + (string_of_exp(e1) + (" -> " + (string_of_exp(e2) + ")"))))
       }
@@ -106,10 +106,11 @@ object PrinterDois {
   }
 
   def string_of_node(p: Node) : String  = {
-    ("node " + (p.name + (" (" + (string_of_env(p.inputs) + (") returns (" + (string_of_env(p.outputs) + (")" + (newline + ("var " + (string_of_env(p.locals) + (newline + ("let" + (newline + (string_of_eqn_list(p.eqns) + ("tel" + newline)))))))))))))))
+    ("procedure " + (p.name + (" is\n (\n" + (string_of_env(p.inputs) + (") returns (" + (string_of_env(p.outputs) + (")" + (newline + ("var " + (string_of_env(p.locals) + (newline + ("let" + (newline + (string_of_eqn_list(p.eqns) + ("tel" + newline)))))))))))))) + "\nend " + p.name + ";\n")
   }
 
   def main(args: Array[String]) : Unit  = {
+    println("\n\n\n LE RESULTAT :\n\n")
     print(string_of_node(parseFile("stable.lus")))
   }
 

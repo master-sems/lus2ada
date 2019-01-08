@@ -1,6 +1,6 @@
 procedure STABLE is
 
-  init_0: boolean := true;
+  init_0: Boolean := true;
 
   -- INPUTS (PRE)
 
