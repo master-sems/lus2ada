@@ -117,7 +117,7 @@ object ImperativePrinter {
     "    (" +string_of_env(p.inputs, false, false) + " " + string_of_env(p.outputs, true, false) + ")" + newline +
     "  begin" + newline + 
     string_of_eqn_list(p.eqns) +
-    "  end" + newline + 
+    "  end;" + newline + 
     "begin "+newline+
     "  null;" +
     "\nend " + p.name + ";\n"+

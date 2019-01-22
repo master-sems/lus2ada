@@ -1,4 +1,4 @@
--- Here starts generated code by David Guerin
+-- Here starts generated code by David Guerin (RGF2aWQ=)
 procedure STABLE is
   -- INPUTS (PRE)
 
@@ -16,7 +16,7 @@ procedure STABLE is
   begin
   level := (count > 0);
   count := (if set then delay0 else (if (if false then false else (pre_level)) then ((pre_count) - 1) else 0));
-  end
+  end;
 begin 
   null;
 end STABLE;
