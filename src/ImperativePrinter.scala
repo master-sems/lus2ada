@@ -133,7 +133,7 @@ object ImperativePrinter {
     "  procedure step " + newline +
     "    (" +string_of_env(p.inputs, false, false) + "; " + string_of_env(p.outputs, true, false) + ") is" + newline +
     "  begin" + newline + 
-    string_of_eqn_list(p.eqns) +
+    string_of_eqn_list(p.eqns) + // This is where we order
     prelist(p.outputs)+
     prelist(p.locals)+
     "  init_0 := false;" + newline +
@@ -154,11 +154,12 @@ object ImperativePrinter {
   def ada_gen(lustreFileName: String): Unit = {
     println("ada_gen : Generating adb file for " + lustreFileName)
     val destinationFile = lustreFileName.replaceAll(".lus", "") + "_gen.adb"
-    write_to_file(destinationFile, string_of_node(parseFile("stable.lus")))
+    write_to_file(destinationFile, string_of_node(parseFile(lustreFileName)))
   }
 
   def main(args: Array[String]) : Unit  = {
     ada_gen("stable.lus")
+    ada_gen("leds.lus")
   }
 
 }

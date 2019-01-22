@@ -1,6 +1,4 @@
-import java.io.Reader
-import java.io.FileReader
-import java.io.IOException
+import java.io._
 import java.util.NoSuchElementException
 
 import Util._
@@ -109,8 +107,21 @@ object SimplePrinter {
     ("node " + (p.name + (" (" + (string_of_env(p.inputs) + (") returns (" + (string_of_env(p.outputs) + (")" + (newline + ("var " + (string_of_env(p.locals) + (newline + ("let" + (newline + (string_of_eqn_list(p.eqns) + ("tel" + newline)))))))))))))))
   }
 
+  def write_to_file(fileName:String, stringToWrite: String): Unit = {
+    val file = new File(fileName)
+    val bw = new BufferedWriter(new FileWriter(file))
+    bw.write(stringToWrite)
+    bw.close()
+  }
+
+  def lus_gen(lustreFileName: String): Unit = {
+    println("ada_gen : Generating adb file for " + lustreFileName)
+    val destinationFile = lustreFileName.replaceAll(".lus", "") + "_gen.lus"
+    write_to_file(destinationFile, string_of_node(parseFile(lustreFileName)))
+  }
+
   def main(args: Array[String]) : Unit  = {
-    print(string_of_node(parseFile("stable.lus")))
+    lus_gen("stable.lus")
   }
 
 }

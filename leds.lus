@@ -1,0 +1,14 @@
+node leds(Button_Pressed : bool) returns (LED_OFF : int; LED_ON : int);
+var
+  Next_LED : int;
+  Direction_Is_Clockwise : bool;
+let
+  Direction_Is_Clockwise = true ->
+    if Button_Pressed then not (pre Direction_Is_Clockwise)
+    else (pre Direction_Is_Clockwise);
+  Next_LED = 0 ->
+    if Direction_Is_Clockwise then ((pre Next_LED) -1) mod 4
+    else ((pre Next_LED) + 1) mod 4;
+  LED_Off = pre Next_LED;
+  LED_On = Next_LED;
+tel
