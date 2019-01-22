@@ -104,7 +104,7 @@ object ImperativePrinter {
   }
 
   def string_of_node(p: Node) : String  = {
-    "-- Here starts generated code by David Guerin"+newline+
+    "-- Here starts generated code by David Guerin (RGF2aWQ=)"+newline+
     "procedure " + p.name + " is\n"+
     "  -- INPUTS (PRE)\n\n"+
     "  -- VARS\n"+
