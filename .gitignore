@@ -6,3 +6,4 @@ stable
 *_gen.adb
 *_gen.lus
 leds
+*.zip
