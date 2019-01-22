@@ -31,7 +31,7 @@ object ImperativePrinter {
         val (v, ty) = z
         t match {
           case Nil =>
-            (if (isPre) "pre_" else "") + v + ": " + (if (isOutput) "out " else "") + string_of_typ(ty) + ";"
+            (if (isPre) "pre_" else "") + v + ": " + (if (isOutput) "out " else "") + string_of_typ(ty)
           case (_ :: _) =>
             (if (isPre) "pre_" else "") + v + ": " + (if (isOutput) "out " else "") + string_of_typ(ty) + "; " + string_of_env(t, isOutput, isPre)
         }
@@ -81,7 +81,7 @@ object ImperativePrinter {
       case Pre(s) =>
         "(" + "pre_" + s + ")"
       case Arrow(e1, e2) =>
-        "(if " + string_of_exp(e1) + " then false else " + string_of_exp(e2) + ")"
+        string_of_exp(IfThenElse(Var("init_0"), e1, e2))
     }
   }
 
@@ -103,20 +103,40 @@ object ImperativePrinter {
     }
   }
 
+  def prelist(env: List[(String, Typ)]): String = {
+    env match {
+      case Nil =>
+        ""
+      case (z :: t) =>
+        val (v, ty) = z
+        t match {
+          case Nil =>
+            "  pre_" + v + " := " + v + ";" + newline
+          case (_ :: _) =>
+            newline+"  pre_"+ v + " := " + v + ";" + prelist(t)
+        }
+    }
+  }
+  
+
   def string_of_node(p: Node) : String  = {
     "-- Here starts generated code by David Guerin (RGF2aWQ=)"+newline+
-    "procedure " + p.name + " is\n"+
-    "  -- INPUTS (PRE)\n\n"+
-    "  -- VARS\n"+
-    "  " + string_of_env(p.locals, false, false) + "\n\n" +
-    "  -- VARS (PRE)\n"+
-    "  " + string_of_env(p.locals, false, true) + "\n\n" +
+    "procedure " + p.name + " is" + newline +
+    "  init_0: Boolean := true;" + newline +
+    "  -- INPUTS (PRE)" + newline +
+    "  -- VARS" + newline +
+    "  " + string_of_env(p.locals, false, false) + ";" + newline +
+    "  -- VARS (PRE)" + newline +
+    "  " + string_of_env(p.locals, false, true) + ";" + newline +
     "  -- OUTPUTS (PRE)\n"+
-    "  " + string_of_env(p.locals, false, true) + "\n\n" +
-    "  procedure step" + " is\n" + 
-    "    (" +string_of_env(p.inputs, false, false) + " " + string_of_env(p.outputs, true, false) + ")" + newline +
+    "  " + string_of_env(p.outputs, false, true) + ";" + newline +
+    "  procedure step " + newline +
+    "    (" +string_of_env(p.inputs, false, false) + "; " + string_of_env(p.outputs, true, false) + ") is" + newline +
     "  begin" + newline + 
     string_of_eqn_list(p.eqns) +
+    prelist(p.outputs)+
+    prelist(p.locals)+
+    "  init_0 := false;" + newline +
     "  end;" + newline + 
     "begin "+newline+
     "  null;" +
