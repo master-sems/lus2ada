@@ -1,6 +1,4 @@
-import java.io.Reader
-import java.io.FileReader
-import java.io.IOException
+import java.io._
 import java.util.NoSuchElementException
 
 import Util._
@@ -106,6 +104,7 @@ object ImperativePrinter {
   }
 
   def string_of_node(p: Node) : String  = {
+    "-- Here starts generated code by David Guerin"+newline+
     "procedure " + p.name + " is\n"+
     "  -- INPUTS (PRE)\n\n"+
     "  -- VARS\n"+
@@ -119,13 +118,27 @@ object ImperativePrinter {
     "  begin" + newline + 
     string_of_eqn_list(p.eqns) +
     "  end" + newline + 
+    "begin "+newline+
     "  null;" +
-    "\nend " + p.name + ";\n"
+    "\nend " + p.name + ";\n"+
+    "-- Here ends generated code by David Guerin"+newline
+  }
+
+  def write_to_file(fileName:String, stringToWrite: String): Unit = {
+    val file = new File(fileName)
+    val bw = new BufferedWriter(new FileWriter(file))
+    bw.write(stringToWrite)
+    bw.close()
+  }
+
+  def ada_gen(lustreFileName: String): Unit = {
+    println("ada_gen : Generating adb file for " + lustreFileName)
+    val destinationFile = lustreFileName.replaceAll(".lus", "") + "_gen.adb"
+    write_to_file(destinationFile, string_of_node(parseFile("stable.lus")))
   }
 
   def main(args: Array[String]) : Unit  = {
-    println("\n\n\n LE RESULTAT :\n\n")
-    print(string_of_node(parseFile("stable.lus")))
+    ada_gen("stable.lus")
   }
 
 }

@@ -7,7 +7,7 @@ To try this on your machine you need scala to be installed and the `scalac` comm
 To run just do this :
 
 ```
-./debug.sh
+./debug.sh ImperativePrinter
 ```
 
 To test the printer do this :

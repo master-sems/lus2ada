@@ -356,7 +356,7 @@ object Parser {
     def tokens: List[(Token, Int)] = {
       Lexer.lexer(content)
     }
-    val b = println("FILE " + filename +"IS LEXED.\n")
+    val b = println("FILE " + filename +" IS LEXED.\n")
     parseProg(tokens)
   }
   
